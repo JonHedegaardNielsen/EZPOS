@@ -1,11 +1,10 @@
 var productDB = new PouchDB('ProductList')
-var purchaseDB = new PouchDB('PurchaseHistory')
 
 const purchasesTable = document.getElementById("puchasesTable")
 const vBox = document.getElementById("VBox")
 
-const userName = '';
-const userPassword = ''; 
+
+
 
 document.addEventListener("keydown", function (event) {
     if (event.key === "Enter") {
@@ -13,6 +12,33 @@ document.addEventListener("keydown", function (event) {
         document.getElementById("loginBtn").click();
     }
 });
+
+/*--------------------------------------*/ 
+function getCouchDBName(username)
+{
+    return "userdb-657a706f73"
+
+    let encoded = new Buffer(username).toString('hex');    
+    return "userdb-"+encoded
+}
+var username = "ezpos";
+var password = "Test123";
+var dbname = getCouchDBName(username);
+
+async function login() {
+    var response = await fetch("https://sofa.hoxer.net/_session", {
+        method : "POST",
+        headers: {
+            "Content-Type" : "application/json"
+        },
+        body : JSON.stringify({"name" : username, "password" : password})
+    })
+    console.log(response)
+}
+login();
+
+const db = new PouchDB(`sofa.hoxer.net/${dbname}`)
+/*--------------------------------------*/ 
 
 document.getElementById("loginBtn").addEventListener("click", function () {
     const enteredUsername = document.getElementById("username").value;
@@ -63,7 +89,7 @@ async function loadPurchases() {
 
     purchasesTable.style.display = "contents"
 
-    const doc = await purchaseDB.get("purchase")
+    const doc = await productDB.get("purchase")
 
     const purchases = doc.purchases || [];
 
@@ -184,7 +210,7 @@ async function retrieveAndDisplayProducts() {
                 <input type="text" minlength="2" placeholder="Name" class="group-input" value="${product.Name}">
                 <input type="number" name="price" min="1" placeholder="Price" class="group-input" value="${product.Price}">
                 <input type="number" name="amount" min="1" placeholder="Amount" class="group-input" value="${product.Amount}">
-                <input type="checkbox" name="isHidden" ${product.Hidden ? "checked" : ""}>
+                <input type="checkbox" class="group-box" name="isHidden" ${product.Hidden ? "checked" : ""}>
                 <label class="hidden"> Hidden</label>
                 <button class="RemoveButton">Remove</button>
             `;
@@ -210,7 +236,7 @@ async function loadMostSold() {
             <th>Most Money Made</th>
         </tr>
     `
-    const doc = await purchaseDB.get("purchase")
+    const doc = await productDB.get("purchase")
 
     const purchases = doc.purchases || [];
 

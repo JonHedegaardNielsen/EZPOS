@@ -4,8 +4,21 @@ let selectedPickedItemDivs = []
 let pickedItemsNames = new Set()
 const totalCostSpan = document.getElementById("totalCostText")
 var productDB = new PouchDB('ProductList')
-var purchaseDB = new PouchDB('PurchaseHistory')
+var username = "ezpos";
+var password = "Test123";
 
+function getCouchDBName(username)
+{
+    return "userdb-657a706f73"
+
+    let encoded = new Buffer(username).toString('hex');    
+    return "userdb-"+encoded
+}
+
+var dbname = getCouchDBName(username);
+var url = `https://${username}:${password}@sofa.hoxer.net/${dbname}`
+console.log(url)
+const db = new PouchDB(`https://${username}:${password}@sofa.hoxer.net/${dbname}`)
 
 document.addEventListener('DOMContentLoaded', async () => {
     async function loadShopItems() {
@@ -173,7 +186,7 @@ async function aprovePurchase() {
     try {
         let purchaseDoc
         try{
-            purchaseDoc = await purchaseDB.get('purchase');
+            purchaseDoc = await productDB.get('purchase');
         } catch{
             purchaseDoc = {
                 _id: "purchase",
@@ -218,7 +231,7 @@ async function aprovePurchase() {
         if (isInsertable === true) {
             await productDB.put({ ...doc, products });
 
-            await purchaseDB.put({ ...purchaseDoc, purchases});
+            await productDB.put({ ...purchaseDoc, purchases});
 
 
             clearPickedItems();

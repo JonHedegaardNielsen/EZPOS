@@ -9,7 +9,6 @@
 
 */
 
-
 body {
     /*324080*/
     margin: 0;
@@ -29,6 +28,10 @@ body {
     background-color: #00000069;
 }
 
+
+
+  
+
 .group button,
 .group select,
 .group input {
@@ -38,8 +41,7 @@ body {
     border-radius: 8px; /* Smooth, rounded corners */
     background-color: #f1f1f1; /* Soft, light background */
     color: #333; /* Darker text for better contrast */
-    transition: all 0.3s ease; /* Smooth transition for interactions */
-}
+    transition: all 0.3s ease; /* Smooth transition for interactions */}
 
 .group button:hover,
 .group select:hover,
@@ -64,7 +66,20 @@ body {
 
 .group input[type="checkbox"]{
     transform: scale(2);
+    align-self: center;
 }
+
+  
+@supports (-webkit-touch-callout: none) {
+    .group-input{
+        width: 15%;
+    }
+
+    .group input[type="checkbox"]{
+        transform: scale(1);
+        align-self: center;
+    } 
+  }
 
 .group label{
     margin-top: 10px;
@@ -100,15 +115,6 @@ body {
     transform: scale(1.05);
     border: 2px solid #b60000 !important;
 }
-
-
-
-
-
-
-
-
-
 
 /*NAVBAR*/
 .topnav {
