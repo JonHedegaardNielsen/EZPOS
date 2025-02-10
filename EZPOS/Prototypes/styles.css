@@ -390,3 +390,8 @@ cursor: pointer;
     font-weight: bold;
     color: red;
 }
+
+.group-input::placeholder {
+    color: rgba(0, 0, 0, 0.4); 
+    opacity: 1;
+}
